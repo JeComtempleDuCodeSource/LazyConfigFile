@@ -3,6 +3,7 @@
 #ifndef LAZYCONFIGFILE_HPP
 #define LAZYCONFIGFILE_HPP
 
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>

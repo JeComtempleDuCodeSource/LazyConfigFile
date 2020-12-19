@@ -170,9 +170,10 @@ void LCF::LazyConfigOut::createConfiguration(std::string outputFileName)
 {
     if (outputFile.is_open())
         writeBuffered();
-    this->outputFile = std::ofstream(outputFileName, std::ios::out);
-    outputFile << "# Lazy Config File \"LCF\" or \"ETPCF\" (Easy-To-Parse-Configuration-File)\n";
-    outputFile << "# Syntax is dead simple: Key=Value;\n";
+    this->outputFile.close();
+    this->outputFile.open(outputFileName, std::ios::out);
+    outputFile << "# Lazy Config File \"LCF\" or ETPCF, Easy-To-Parse-Configuration-File\n";
+    outputFile << "# Syntax is Key=Value;\n";
 }
 
 void LCF::LazyConfigOut::writeValue(std::string Key, std::string Value)
@@ -213,11 +214,13 @@ void LCF::LazyConfigOut::writeBuffered()
     {
         outputFile << currentValue.Key << '=' << currentValue.Value << ";\n";
     }
+    outputFile.flush();
 }
 
 void LCF::LazyConfigOut::clearBuffered()
 {
     this->outConfiguration.clear();
+    outputFile.close();
 }
 
 LCF::LazyConfigOut::~LazyConfigOut()

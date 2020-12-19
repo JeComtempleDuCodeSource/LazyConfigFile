@@ -268,12 +268,14 @@ namespace LCF
             {
                 outputFile << currentValue.Key << '=' << currentValue.Value << ";\n";
             }
+            outputFile.flush();
         }
 
         // Clear buffered rows
         public: void clearBuffered()
         {
             this->outConfiguration.clear();
+            outputFile.close();
         }
         
         // Close file
