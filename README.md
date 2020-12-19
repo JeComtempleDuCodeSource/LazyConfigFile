@@ -1,0 +1,2 @@
+# LazyConfigFile
+Dumber than .ini
