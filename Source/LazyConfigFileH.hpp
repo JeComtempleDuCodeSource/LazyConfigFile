@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef LAZYCONFIGFILE_HPP
-#define LAZYCONFIGFILE_HPP
+#ifndef LAZYCONFIGFILEH_HPP
+#define LAZYCONFIGFILEH_HPP
 
 #include <fstream>
 #include <string>
@@ -286,4 +286,4 @@ namespace LCF
         }
     };
 }
-#endif /* LAZYCONFIGFILE_HPP */
+#endif /* LAZYCONFIGFILEH_HPP */
