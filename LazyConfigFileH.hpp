@@ -21,7 +21,7 @@ namespace LCF
         int Count = 0;
         if (stringToCheck[0] == '-')
             Count = 1;
-        for (; stringToCheck[Count] != 0; Count++)
+        for (; Count < stringToCheck.size(); Count++)
         {
             if (!isdigit(stringToCheck[Count]))
                 return false;
