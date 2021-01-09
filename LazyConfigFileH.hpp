@@ -232,14 +232,14 @@ namespace LCF
         // Overload that take directly a configvalue
         public: void writeValue(configValue Value)
         {
-            std::string strValue = std::to_string(Value);
-            outConfiguration.push_back((configValue){Key, strValue});
+            outConfiguration.push_back(Value);
         }
 
         // Overload that take directly a integer as value
         public: void writeValue(std::string Key, long long int Value)
         {
-            outConfiguration.push_back(Value);
+            std::string strValue = std::to_string(Value);
+            outConfiguration.push_back((configValue){Key, strValue});
         }
 
         // Inserts to buffer

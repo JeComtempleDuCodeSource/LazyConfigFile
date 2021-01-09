@@ -1,5 +1,4 @@
-#include <LazyConfigFile.hpp>
-// Or #include <LazyConfigFileH.hpp>
+#include <LazyConfigFileH.hpp>
 #include <fstream>
 #include <iostream>
 
