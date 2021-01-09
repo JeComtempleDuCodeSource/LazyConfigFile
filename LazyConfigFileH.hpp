@@ -16,9 +16,9 @@ namespace LCF
         std::string Value;
     }configValue;
 
-    bool isInteger(std::string stringToCheck)
+    static bool isInteger(std::string stringToCheck)
     {
-        int Count = 0;
+        unsigned int Count = 0;
         if (stringToCheck[0] == '-')
             Count = 1;
         for (; Count < stringToCheck.size(); Count++)
