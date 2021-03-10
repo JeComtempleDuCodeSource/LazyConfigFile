@@ -1,11 +1,11 @@
-#pragma once
-
 #ifndef LAZYCONFIGFILEH_HPP
 #define LAZYCONFIGFILEH_HPP
 
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
+#include <limits>
 
 namespace LCF
 {   
@@ -16,16 +16,33 @@ namespace LCF
         std::string Value;
     }configValue;
 
-    static bool isInteger(std::string stringToCheck)
+    static bool isFloat(std::string Str)
     {
-        unsigned int Count = 0;
-        if (stringToCheck[0] == '-')
-            Count = 1;
-        for (; Count < stringToCheck.size(); Count++)
-        {
-            if (!isdigit(stringToCheck[Count]))
-                return false;
-        }
+        if (std::stof(std::to_string(std::stof(Str))) == std::stof(Str))
+            return true;
+        else return false; 
+    }
+
+    static bool isInt(std::string Str)
+    {
+        if (std::to_string(std::stoi(Str)) == Str)
+            return true;
+        else return false; 
+    }
+
+    static bool isuInt(std::string Str)
+    {
+        if (std::to_string(std::stoul(Str)) == Str)
+            return true;
+        else return false; 
+    }
+
+    static bool isFile(std::string Path)
+    {
+        std::ifstream inputFile = std::ifstream(Path, std::ios::in);
+        if (!inputFile.is_open())
+            return false;
+        inputFile.close();
         return true;
     }
 
@@ -137,7 +154,8 @@ namespace LCF
                     return inConfiguration[Index];
                 }
             }
-            return (configValue){"NOT FOUND", "NOT FOUND"};
+            std::clog << "LCF: Key \"" << keyName << "\" not found!\n";
+            return (configValue){"LCF: NOT FOUND", "LCF: NOT FOUND"};
         }
 
         // Get row of given key and set as reference the position in the vector of the row
@@ -151,7 +169,8 @@ namespace LCF
                     return inConfiguration[Index];
                 }
             }
-            return (configValue){"NOT FOUND", "NOT FOUND"};
+            std::clog << "LCF: Key \"" << keyName << "\" not found!\n";
+            return (configValue){"LCF: NOT FOUND", "LCF: NOT FOUND"};
         }
 
         // Return row at vector index
@@ -168,6 +187,7 @@ namespace LCF
                 if (inConfiguration[Index].Key == keyName)
                     return inConfiguration[Index].Value;
             }
+            std::clog << "LCF: Key \"" << keyName << "\" not found!\n";
             return NULL;
         }
 
@@ -177,7 +197,8 @@ namespace LCF
             // If out of range
             if (extractCount >= this->inConfiguration.size())
             {
-                V = (configValue){"NOT FOUND", "NOT FOUND"};
+                std::clog << "LCF: Key \"" << V.Key << "\" not found!\n";
+                V = (configValue){"LCF: NOT FOUND", "LCF: NOT FOUND"};
                 return (*this);
             }
             V = (*this)[extractCount];
@@ -285,5 +306,61 @@ namespace LCF
             this->outConfiguration.clear();
         }
     };
+
+    static bool getInt(LazyConfigIn* configFile, std::string keyName, int& Dest, int Min = std::numeric_limits<int>::lowest(), int Max = std::numeric_limits<int>::max())
+    {
+        if (!isInt((*configFile)[keyName]))
+        {
+            std::cerr << "Config File Check: " << (*configFile)[keyName] << " isn't an integer.\n";
+            return false;
+        }   
+        Dest = std::stoi((*configFile)[keyName]);
+        if (Dest > Max)
+            Dest = Max;
+        else if (Dest < Min)
+            Dest = Min;
+        return true;
+    }
+
+    static bool getuInt(LazyConfigIn* configFile, std::string keyName, unsigned int& Dest, unsigned int Min = 0U, unsigned int Max = std::numeric_limits<unsigned int>::max())
+    {
+        if (!isuInt((*configFile)[keyName]))
+        {
+            std::cerr << "Config File Check: " << (*configFile)[keyName] << " isn't an positive integer.\n";
+            return false;
+        }   
+        Dest = std::stoul((*configFile)[keyName]);
+        if (Dest > Max)
+            Dest = Max;
+        else if (Dest < Min)
+            Dest = Min;
+        return true;
+    }
+
+    static bool getFloat(LazyConfigIn* configFile, std::string keyName, float& Dest, float Min = std::numeric_limits<float>::lowest(), float Max = std::numeric_limits<float>::max())
+    {
+        if (!isFloat((*configFile)[keyName]))
+        {
+            std::cerr << "Config File Check: " << (*configFile)[keyName] << " isn't a floating point number.\n";
+            return false;
+        }   
+        Dest = std::stof((*configFile)[keyName]);
+        if (Dest > Max)
+            Dest = Max;
+        else if (Dest < Min)
+            Dest = Min;
+        return true;
+    }
+
+    static bool getPath(LazyConfigIn* configFile, std::string keyName, std::string& Dest)
+    {
+        if (!isFile((*configFile)[keyName]))
+        {
+            std::cerr << "Config File Check: " << (*configFile)[keyName] << " can't be accessed or isn't a file.\n";
+            return false;
+        }   
+        Dest = (*configFile)[keyName];
+        return true;
+    }
 }
 #endif /* LAZYCONFIGFILEH_HPP */
