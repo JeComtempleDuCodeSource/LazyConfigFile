@@ -1,4 +1,5 @@
 # Lazy Config File "LCF" or ETPCF, Easy-To-Parse-Configuration-File
 # Syntax is Key=Value;
+
 Usefullness=0;
 Name=LazyConfigFile;
