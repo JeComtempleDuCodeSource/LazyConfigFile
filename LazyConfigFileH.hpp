@@ -173,6 +173,7 @@ namespace LCF
         // Calls read
         public: LazyConfigIn(const std::string& configFileName)
         {
+            resetExtract();
             readConfig(configFileName);
         }
 
@@ -180,6 +181,7 @@ namespace LCF
         public: void readConfig(const std::string& configFileName)
         {
             Config.clear();
+            resetExtract();
             readFile(configFileName);
         }
 
